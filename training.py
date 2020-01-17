@@ -1,3 +1,6 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
+
 from utils import ConvNet
 from utils import CocoCaptions
 import utils
