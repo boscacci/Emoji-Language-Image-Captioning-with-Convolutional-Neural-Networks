@@ -11,7 +11,7 @@ import pickle
 
 stop_cache = stopwords.words('english')
 
-e2v = gsm.KeyedVectors.load_word2vec_format('emoji2vec.bin', binary=True)
+e2v = gsm.KeyedVectors.load_word2vec_format('emoji2vec.txt', binary=False)
 w2v = gsm.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
 
 VALID_POS_LIST = ['NN', 'VB', 'JJ']
@@ -56,7 +56,7 @@ def vectorize(caption, image_id):
                     break
     return result
 
-with open('annotations/captions_val2017.json') as f:
+with open('annotations/captions_train2017.json') as f:
     data = json.load(f)
     for i in data['annotations']: 
         image_id_to_captions_dic[i['image_id']] += [i['caption']]
