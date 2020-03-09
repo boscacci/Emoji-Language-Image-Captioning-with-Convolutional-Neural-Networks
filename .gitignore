@@ -1,0 +1,7 @@
+resized_*
+annotations
+.vscode/settings.json
+GoogleNews-vectors-negative300.bin
+captions_as_emojis_a_*
+.DS_Store
+cocoapi*

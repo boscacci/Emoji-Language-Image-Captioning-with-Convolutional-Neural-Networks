@@ -4,7 +4,7 @@
 from utils import ConvNet
 from utils import CocoCaptions
 import utils
-import torch 
+import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 import pickle
@@ -18,17 +18,22 @@ LR = utils.LR
 NUM_CLASSES = utils.NUM_CLASSES
 
 
-train_dir = 'resized_train2017/'
+train_dir = "resized_train2017/"
 
-ann_file_train = 'annotations/captions_train2017.json'
+ann_file_train = "annotations/captions_train2017.json"
 
-train_dataset = CocoCaptions(root=train_dir, annFile=ann_file_train, transform=transforms.ToTensor())
+train_dataset = CocoCaptions(
+    root=train_dir, annFile=ann_file_train, transform=transforms.ToTensor()
+)
 
-train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
-                                           batch_size=BATCH_SIZE, 
-                                           shuffle=True)
+train_loader = torch.utils.data.DataLoader(
+    dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True
+)
 
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+if torch.cuda.is_available():
+    print("\n\nGPU Enabled.\n\n")
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 model = ConvNet(NUM_CLASSES).to(device)
 
@@ -47,8 +52,8 @@ total_step = len(train_loader)
 for epoch in range(NUM_EPOCHS):
 
     losses_for_epoch = []
-    
-    for i, (image_id, images, labels) in enumerate(train_loader): 
+
+    for i, (image_id, images, labels) in enumerate(train_loader):
         images = images.to(device)
         labels = labels.to(device)
 
@@ -56,7 +61,7 @@ for epoch in range(NUM_EPOCHS):
         outputs = model(images)
         loss = 0
         for j in range(labels.shape[1]):
-            loss += criterion(outputs, labels[:,j])
+            loss += criterion(outputs, labels[:, j])
         losses_for_epoch.append(loss)
 
         # Backward and optimize
@@ -64,16 +69,20 @@ for epoch in range(NUM_EPOCHS):
         loss.backward()
         optimizer.step()
 
-        if (i+1) % 100 == 0:
-            print('Epoch [{} / {}], Step [{} / {}], Loss: {}'.format(epoch+1, NUM_EPOCHS, i+1, total_step, loss.item()))
+        if (i + 1) % 100 == 0:
+            print(
+                "Epoch [{} / {}], Step [{} / {}], Loss: {}".format(
+                    epoch + 1, NUM_EPOCHS, i + 1, total_step, loss.item()
+                )
+            )
 
     loss_log.append(losses_for_epoch)
 
 
 ### Save the model checkpoint and loss log
 
-torch.save(model.state_dict(), 'model.ckpt')
+torch.save(model.state_dict(), "model.ckpt")
 
-with open('loss_log.pkl', 'wb') as f: 
+with open("loss_log.pkl", "wb") as f:
     pickle.dump(loss_log, f)
 
