@@ -5,3 +5,7 @@ GoogleNews-vectors-negative300.bin
 captions_as_emojis_a_*
 .DS_Store
 cocoapi*
+model.ckpt
+loss_log.pkl
+id_to_actual_dict.pkl
+id_to_prediction_dict.pkl
