@@ -1,5 +1,5 @@
 resized_*
-annotations
+annotations/anno_ignored
 .vscode/settings.json
 GoogleNews-vectors-negative300.bin
 captions_as_emojis_a_*
